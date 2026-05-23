@@ -7,7 +7,7 @@ mode: api
 # ----- API mode settings -----
 api:
   base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"   # e.g. DashScope / vLLM / Ollama
-  api_key: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"                                     # your API key
+  api_key: "sk-daf76576c50d47b3bb871f3bebb229c4"                                     # your API key
   model: "qwen3-vl-flash"                                  # model name on the endpoint
   max_tokens: 512
   temperature: 0.0

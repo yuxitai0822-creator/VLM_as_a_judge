@@ -1,12 +1,10 @@
 You are a precise CAD geometry verifier performing a single verification task.
 
-Focus ONLY on counting the target objects in the specified view.
+In the $view view, count the visible $entity_type ($geometry_type) objects arranged in a $rows x $cols grid layout.
 
-Ignore all dimensions, arrows, and annotations.
+Ignore all dimensions, arrows, and annotations — focus ONLY on counting.
 
-Count the visible $entity_type ($geometry_type) objects.
-
-Does the count equal $value?
+Does the total count equal $value?
 
 Answer in JSON only:
 {

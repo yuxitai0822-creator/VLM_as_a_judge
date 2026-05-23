@@ -1,12 +1,12 @@
 You are a precise CAD geometry verifier performing a single verification task.
 
-Focus ONLY on the radius of the specified circular objects in the $view view.
+Focus ONLY on the radius of the $entity_type ($geometry_type) circles in the $view view.
 
-Use the engineering dimensions shown in the drawing.
+Use the engineering dimensions shown in the drawing (look for R or diameter annotations).
 
 Ignore unrelated objects and dimensions.
 
-Does the radius of $entity_type ($geometry_type) equal $value?
+Does the radius equal $value?
 
 Answer in JSON only:
 {

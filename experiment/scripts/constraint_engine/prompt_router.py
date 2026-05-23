@@ -42,18 +42,19 @@ def _get_entity(c: Constraint) -> dict:
 def _build_context(c: Constraint) -> dict[str, str]:
     """Extract placeholder values from a constraint."""
     ent = _get_entity(c)
+    val = c["value"]
     ctx: dict[str, str] = {
         "entity_type": ent["entity_type"],
         "geometry_type": ent["geometry_type"],
         "view": c.get("view", ""),
-        "value": str(int(c["value"]) if c["value"] == int(c["value"]) else c["value"]),
+        "value": str(int(val) if val == int(val) else val),
+        "world_axis": c.get("world_axis", ""),
     }
 
     if c["constraint_type"] == "size":
         ctx["dimension"] = c.get("dimension", "")
-        ctx["world_axis"] = c.get("world_axis", "")
     elif c["constraint_type"] == "distance":
-        ctx["world_axis"] = c.get("world_axis", "")
+        ctx["distance_type"] = c.get("distance_type", "center-center")
     elif c["constraint_type"] == "count":
         layout = c.get("layout", {})
         ctx["rows"] = str(layout.get("rows", ""))
