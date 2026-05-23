@@ -1,0 +1,19 @@
+{
+  "rect_width": 804,
+  "rect_height": 849,
+  "rounded_rect_horizontal_count": 1,
+  "rounded_rect_horizontal_distance": 496,
+  "rounded_rect_width": 159,
+  "rounded_rect_height": 213,
+  "rounded_rect_radius": 30,
+  "circle_horizontal_count": 2,
+  "circle_vertical_count": 2,
+  "circle_horizontal_distance": 394,
+  "circle_vertical_distance": 414,
+  "circle_radius": 92,
+  "circle_solid_or_dashed": false,
+  "dunzhu_height": 223,
+  "chengtai_height": 252,
+  "zhuangji_height": 328,
+  "_perturbation": "count_error"
+}

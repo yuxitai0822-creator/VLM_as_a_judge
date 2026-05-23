@@ -1,0 +1,7 @@
+torch>=2.0
+transformers>=4.37
+Pillow>=10.0
+qwen-vl-utils>=0.0.8
+accelerate>=0.25
+openai>=1.0
+pyyaml>=6.0

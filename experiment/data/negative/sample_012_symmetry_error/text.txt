@@ -1,0 +1,6 @@
+A rectangular base plate with width 867 and height 825.
+Contains 1 rounded rectangle(s) arranged horizontally with spacing 587, each 202 wide, 139 tall, corner radius 15.
+Contains 2 circle(s) in a 1x2 grid layout, horizontal spacing 771, vertical spacing 337, radius 83, dashed line style.
+Dunzhu (pier column) height: 202.
+Chengtai (bearing platform) height: 269.
+Zhuangji (pile foundation) height: 303.

@@ -1,0 +1,83 @@
+"""
+FreeCAD Macro: Batch render DXF files to PNG for negative samples.
+
+Fixes:
+  - White background via saveImage 4th parameter
+  - Enable DXF dimension import via preferences
+  - viewTop() for flat orthographic projection
+
+Usage:
+  1. Open FreeCAD GUI
+  2. Menu -> Macro -> Macros -> select this file -> Run
+"""
+
+import FreeCAD
+import Import
+import os
+import time
+
+# ── Configuration ──────────────────────────────────────────────────────
+NEGATIVE_DIR = r"D:\PythonProgramming\CAD Generation\VLM_as_a_judge\experiment\data\negative"
+OUTPUT_SIZE = 2950
+WAIT_SECONDS = 2
+# ────────────────────────────────────────────────────────────────────────
+
+from FreeCAD import Gui
+
+# Enable DXF dimension import
+params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+params.SetBool("dxfinDimensions", True)
+params.SetBool("dxfUseStandardSupport", True)
+
+samples = sorted([d for d in os.listdir(NEGATIVE_DIR)
+                  if os.path.isfile(os.path.join(NEGATIVE_DIR, d, "drawing.dxf"))])
+
+total = len(samples)
+print(f"Found {total} DXF files to render")
+
+for idx, sample in enumerate(samples, 1):
+    dxf_path = os.path.join(NEGATIVE_DIR, sample, "drawing.dxf")
+    png_path = os.path.join(NEGATIVE_DIR, sample, "render.png")
+
+    doc = FreeCAD.newDocument(f"r_{sample}")
+    Import.readDXF(dxf_path, doc.Name)
+    doc.recompute()
+
+    # Debug: show imported object types (only for first sample)
+    if idx == 1:
+        from collections import Counter
+        types = Counter(type(obj).__name__ for obj in doc.Objects)
+        print(f"  Imported object types: {dict(types)}")
+        for obj in doc.Objects:
+            name = type(obj).__name__
+            if 'Text' in name or 'text' in name.lower() or 'Dimension' in name:
+                print(f"    {name}: {obj.Label}")
+
+    # Set up flat top-down view
+    view = Gui.ActiveDocument.ActiveView
+    view.viewTop()
+    view.fitAll()
+
+    # Ensure all objects visible with thicker lines
+    for obj in doc.Objects:
+        if hasattr(obj, "ViewObject"):
+            obj.ViewObject.Visibility = True
+            if hasattr(obj.ViewObject, "LineWidth"):
+                obj.ViewObject.LineWidth = 2.0
+            if hasattr(obj.ViewObject, "DisplayMode"):
+                try:
+                    obj.ViewObject.DisplayMode = "Wireframe"
+                except:
+                    pass
+
+    Gui.updateGui()
+    time.sleep(WAIT_SECONDS)
+
+    # saveImage with #ffffff = white background
+    view.saveImage(png_path, OUTPUT_SIZE, OUTPUT_SIZE, "#ffffff")
+    FreeCAD.closeDocument(doc.Name)
+    Gui.updateGui()
+
+    print(f"    saved {os.path.getsize(png_path)} bytes")
+
+print(f"\nDone. Rendered {total} PNG files.")

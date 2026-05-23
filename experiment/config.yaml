@@ -1,0 +1,24 @@
+# CAD-VLM-as-a-Judge Configuration
+# ============================================================
+
+# Inference mode: "local" (transformers) or "api" (OpenAI-compatible endpoint)
+mode: api
+
+# ----- API mode settings -----
+api:
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"   # e.g. DashScope / vLLM / Ollama
+  api_key: "sk-daf76576c50d47b3bb871f3bebb229c4"                                    # your API key
+  model: "qwen3-vl-flash"                                  # model name on the endpoint
+  max_tokens: 512
+  temperature: 0.0
+
+# ----- Local mode settings -----
+local:
+  model_name: "Qwen/Qwen2.5-VL-7B-Instruct"   # HuggingFace model ID or local path
+  device: "cuda"                                # cuda / cpu
+  torch_dtype: "float16"                        # float16 / bfloat16 / float32
+
+# ----- Data paths (relative to experiment/) -----
+data_dir: "data"
+output_dir: "results"
+prompt_file: "prompts/system_prompt.txt"
