@@ -1,1 +1,10 @@
-config.py 
+config.py
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.env
+*.log
+.claude/
