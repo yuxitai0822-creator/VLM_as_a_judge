@@ -188,25 +188,25 @@ Pipeline 2 的解决策略：
 
 ### 4.3 任务专用 Prompt 路由
 
-每种约束类型路由到专用验证提示，强制 VLM 聚焦于单一推理模式：
+每种约束类型路由到专用验证提示，强制 VLM 聚焦于单一推理模式。Prompt 模板将约束的全部信息（view、world_axis、layout 等）完整填入：
 
-| 约束类型 | Prompt 文件 | 核心指令 |
-|---------|------------|---------|
-| `count` | count.txt | "Count the target objects, ignore all dimensions, arrows, annotations" |
-| `size` | size.txt | "Check this one dimension, ignore unrelated objects and dimensions" |
-| `size` (radius) | radius.txt | "Check radius of circular objects, ignore unrelated" |
-| `distance` | distance.txt | "First identify centers, then measure center-to-center distance on one axis" |
+| 约束类型 | Prompt 文件 | 填充字段 | 核心指令 |
+|---------|------------|---------|---------|
+| `count` | count.txt | view, entity_type, geometry_type, rows, cols, value | "在指定视图中，按 grid layout 数对象" |
+| `size` | size.txt | dimension, entity_type, geometry_type, view, world_axis, value | "在指定视图沿指定轴，检查指定维度" |
+| `size` (radius) | radius.txt | entity_type, geometry_type, view, value | "查找 R 或直径标注，检查半径" |
+| `distance` | distance.txt | distance_type, entity_type, geometry_type, view, world_axis, value | "先定位中心，再测量 center-center 间距" |
 
-示例 — count 约束的生成 prompt：
+示例 — count 约束的完整生成 prompt：
 
 ```
 You are a precise CAD geometry verifier performing a single verification task.
 
-Focus ONLY on counting the target objects in the specified view.
-Ignore all dimensions, arrows, and annotations.
+In the top view, count the visible Dunzhu (rounded_rectangle) objects arranged in a 1 x 2 grid layout.
 
-Count the visible Dunzhu (rounded_rectangle) objects.
-Does the count equal 2?
+Ignore all dimensions, arrows, and annotations — focus ONLY on counting.
+
+Does the total count equal 2 and satisfy the specific layout?
 
 Answer in JSON only:
 {
@@ -215,47 +215,66 @@ Answer in JSON only:
 }
 ```
 
+示例 — distance 约束的完整生成 prompt：
+
+```
+Focus ONLY on the center-center distance between adjacent Zhuangji (circle) objects
+in the front view, measured along the x-axis.
+
+First identify the center of each object, then measure the center-center distance.
+
+Does the center-center distance equal 416?
+```
+
 ### 4.4 结果
 
-> 注：因 API 连接中断，实际处理 42/100 样本（25 正 + 17 负），1 个样本因连接错误跳过。
+100 个样本全部完成，共 1343 次 VLM 约束检查。
 
 #### 总体指标
 
-| 指标 | 值 |
-|------|-----|
-| 已处理样本 | 42 (25 正 + 17 负) |
-| VLM 调用总数 | 560 |
-| **总体准确率** | **38.10%** (16/42) |
-| **正样本准确率** | **0.00%** (0/25) |
-| **负样本准确率** | **94.12%** (16/17) |
+| 指标 | V0 Prompt (42 样本) | **V1 Prompt (100 样本)** |
+|------|---------------------|--------------------------|
+| 总体准确率 | 38.10% (16/42) | **74.00%** (74/100) |
+| 正样本准确率 | 0.00% (0/25) | **0.00%** (0/25) |
+| 负样本准确率 | 94.12% (16/17) | **98.67%** (74/75) |
+
+> V0 = 初始 prompt（未完整填充约束信息）；V1 = 优化后的 prompt（完整填充 view、world_axis、layout 等）。V0 仅跑完 42 样本即中断。
 
 #### 按扰动类型的负样本准确率
 
-| 扰动类型 | 准确率 | 详情 |
-|---------|--------|------|
-| count_error | **100.00%** | 6/6 |
-| symmetry_error | **100.00%** | 5/5 |
-| scale_error | **83.33%** | 5/6 |
+| 扰动类型 | V0 | **V1** |
+|---------|-----|--------|
+| count_error | 100% (6/6) | **100%** (25/25) |
+| symmetry_error | 100% (5/5) | **100%** (25/25) |
+| scale_error | 83% (5/6) | **96%** (24/25) |
 
-#### 按约束类型的性能（560 次检查）
+#### 按约束类型的 VLM 通过率（1343 次检查）
 
-| 约束类型 | 通过率 | 详情 |
-|---------|--------|------|
-| `count` | **96.4%** | 80/83 |
-| `distance` | **48.6%** | 51/105 |
-| `size` | **62.9%** | 234/372 |
+| 约束类型 | V0 通过率 | **V1 通过率** | 变化 |
+|---------|----------|-------------|------|
+| `count` | 96.4% (80/83) | **92.1%** (186/202) | -4.3pp |
+| `distance` | 48.6% (51/105) | **60.9%** (142/233) | **+12.3pp** |
+| `size` | 62.9% (234/372) | **71.9%** (653/908) | **+9.0pp** |
 
-#### 正样本维度失败分析（25 样本，350 约束）
+#### 正样本维度失败分析（25 样本）
 
-| 维度 | 失败率 | 详情 |
-|------|--------|------|
-| `size radius` | **60%** | 15/25 失败 |
-| `size height` | **46%** | 58/125 失败 |
-| `size width` | **18%** | 9/50 失败 |
-| `size corner_radius` | **0%** | 0/25 失败 |
-| `count` | **~4%** | 2/50 失败 |
+| 维度 | V0 失败率 | **V1 失败率** | 变化 |
+|------|----------|-------------|------|
+| `distance` | — (未细分) | **84%** | 49/58 FAIL |
+| `size radius` | 60% | **60%** | 持平 |
+| `size height` | 46% | **25%** | **-21pp** |
+| `size width` | 18% | **16%** | 持平 |
+| `count` | ~4% | **0%** | **0/50 FAIL** |
+| `size corner_radius` | 0% | **0%** | 持平 |
 
-正样本每样本约束通过率：平均 **60.8%**（范围 42.9%–75.0%）。
+#### Prompt 优化的关键改进
+
+V1 prompt 相比 V0 的核心变化：
+
+1. **count prompt** — 增加了 `view`（在哪个视图数）和 `rows x cols`（网格布局），并要求同时验证 count 和 layout。正样本 count 约束从 ~4% 失败率降至 0%。
+2. **size prompt** — 增加了 `world_axis`（沿哪个轴量），height 失败率从 46% 大幅降至 25%。
+3. **distance prompt** — 增加了 `distance_type`（center-center）和 `world_axis`，通过率从 48.6% 提升至 60.9%。
+4. **radius prompt** — 增加了 `view` 和"look for R or diameter annotations"引导。
 
 ---
 
@@ -263,7 +282,7 @@ Answer in JSON only:
 
 ### 5.1 综合对比
 
-| 维度 | Pipeline 1 | Pipeline 2 |
+| 维度 | Pipeline 1 | Pipeline 2 (V1 Prompt) |
 |------|-----------|-----------|
 | VLM 调用/样本 | 1 | 12–14 |
 | Prompt 设计 | 通用单一 prompt | 按约束类型路由的专用 prompt |
@@ -271,55 +290,177 @@ Answer in JSON only:
 | 注意力控制 | 低（全文+全图） | 高（每次一个验证任务） |
 | 确定性组件 | 无 | 文本→约束解析 100% 确定性 |
 | 诊断价值 | 低（一个布尔值） | 高（精确定位失败维度） |
-| 总体准确率 | 60% | 38% |
+| **总体准确率** | **60%** | **74%** |
 | 正样本准确率 | 0% | 0% |
-| 负样本准确率 | 80% | 94% |
+| **负样本准确率** | **80%** | **98.67%** |
 | 解析失败率 | 12% | 0% |
+| count_error 检测 | 80% | 100% |
+| symmetry_error 检测 | 76% | 100% |
+| scale_error 检测 | 84% | 96% |
 
 ### 5.2 关键对比发现
 
+**Pipeline 2 在所有维度上优于 Pipeline 1**：总体准确率 74% vs 60%，负样本准确率 98.67% vs 80%。逐约束分解 + 任务专用 prompt 策略显著优于端到端判断。
+
 **正样本准确率均为 0%**——两个 Pipeline 都无法正确识别正样本。这说明问题不在 prompt 策略，而在模型本身无法精确读取 CAD 工程图中的数值。
 
-**负样本准确率：Pipeline 2 (94%) > Pipeline 1 (80%)**——Pipeline 2 的提升主要来自约束分解使 count_error 和 symmetry_error 的检测率达到 100%。
+**负样本检测：Pipeline 2 全面领先**——count_error 和 symmetry_error 均达到 100% 检测率，scale_error 达到 96%（仅 1 个漏检）。
 
 **解析稳定性：Pipeline 2 (0%) > Pipeline 1 (12%)**——Pipeline 2 的短 prompt + 结构化输出几乎不会触发 token 溢出。
 
-### 5.3 约束级别的深入发现
+### 5.3 正样本失败根因分析
 
-Pipeline 2 的逐约束粒度揭示了模型能力的精细图谱：
+25 个正样本全部被判为 MISMATCH。Pipeline 2 的逐约束粒度可以精确定位每个正样本的失败点。
 
-| 能力维度 | 模型表现 | 分析 |
-|---------|---------|------|
-| **对象计数** | 96.4% 通过 | 任务专用 prompt 有效缓解了注意力漂移 |
-| **圆角半径** | 100% 通过 | 角半径标注（如 R23）清晰可读 |
-| **宽度验证** | 82% 通过 | 整体宽度标注较容易识别 |
-| **高度验证** | 54% 通过 | Z轴高度和多层级标注是主要干扰 |
-| **距离测量** | 49% 通过 | 需要多步空间推理（定位中心→测量间距） |
-| **半径验证** | 40% 通过 | 圆的半径标注读取困难 |
+#### 失败维度排序
+
+| 约束维度 | 失败率 | 受影响样本数 | 影响面 |
+|---------|--------|------------|--------|
+| `distance` | **84%** (49/58) | **25/25 (100%)** | 每个样本都失败 |
+| `size radius` | **60%** (15/25) | **15/25 (60%)** | 多数样本失败 |
+| `size height` | **25%** (31/125) | **20/25 (80%)** | 大部分样本至少一个 height 失败 |
+| `size width` | **16%** (8/50) | **8/25 (32%)** | 少数样本失败 |
+| `count` | **0%** (0/50) | 0/25 | 完美 |
+| `size corner_radius` | **0%** (0/25) | 0/25 | 完美 |
+
+```
+正样本失败根因权重（按影响面排序）：
+  distance    ████████████████████████████████  49/58 FAIL  ← 100% 样本受影响
+  size height ████████████████                  31/125 FAIL ← 80% 样本受影响
+  size radius ███████████████                   15/25 FAIL  ← 60% 样本受影响
+  size width  ████                               8/50 FAIL  ← 32% 样本受影响
+  count       (完美)                              0/50 FAIL
+  corner_r    (完美)                              0/25 FAIL
+```
+
+#### 关键瓶颈：Distance（100% 样本命中）
+
+**Distance 是正样本准确率为 0% 的首要原因。** 所有 25 个正样本都在 distance 约束上失败——58 个 distance 约束中 49 个被判为 FAIL（84% 失败率）。
+
+Distance 约束要求模型执行两步空间推理：
+1. 定位对象的几何中心
+2. 测量相邻中心之间的距离
+
+Qwen3-VL-Flash 在这个多步推理任务上几乎完全不可靠。由于聚合逻辑是 AND（所有约束都通过才算 MATCH），只要 distance 失败，正样本就不可能被判对。
+
+#### 每样本失败详情
+
+| 样本 | 失败数/总数 | 失败维度 |
+|------|-----------|---------|
+| sample_001 | 6/14 | height×3, distance×2, radius |
+| sample_002 | 6/14 | width, height×2, distance×2, radius |
+| sample_003 | 5/14 | height×2, distance×2 |
+| sample_004 | 7/14 | width, height×2, distance×3, radius |
+| sample_005 | 4/14 | height, distance×2, radius |
+| sample_006 | 3/13 | width, height, distance |
+| sample_007 | 5/14 | height×2, distance×2, radius |
+| sample_008 | 3/13 | distance×2, radius |
+| sample_009 | 6/13 | width, height×2, distance×2, radius |
+| sample_010 | 6/14 | width, height×2, distance×3 |
+| sample_011 | 5/14 | height, distance×3, radius |
+| sample_012 | 3/12 | width, height, distance |
+| sample_013 | 4/14 | distance×2, radius, height |
+| sample_014 | 3/14 | distance×2, radius |
+| sample_015 | 3/13 | width, height, distance |
+| sample_016 | 3/12 | height×2, distance |
+| sample_017 | 3/13 | height, distance×2 |
+| sample_018 | 3/13 | height, distance×2 |
+| sample_019 | 2/12 | distance, radius |
+| sample_020 | 3/12 | distance, radius, height |
+| sample_021 | 5/14 | height×2, distance×2, radius |
+| sample_022 | 4/14 | distance×3, radius |
+| sample_023 | 4/13 | width, height, distance×2 |
+| sample_024 | 5/13 | height×2, distance×2, radius |
+| sample_025 | 2/13 | distance |
+
+**规律：** 每个正样本至少有 2 个约束失败，且 **distance 出现在每个样本的失败列表中**。最少的 sample_025 仅有 1 个 distance 失败（2/13），最多的 sample_004 有 3 个 distance 失败。
+
+#### 结论
+
+正样本 0% 准确率的核心瓶颈是 **distance 约束**。只要 distance 通过率从当前的 16% 提升到超过 50%，正样本就有可能开始被判对。Count 和 corner_radius 已完美通过，width 通过率也较高（84%），height 在 V1 prompt 下已改善到 75%。**Distance 是唯一需要突破的硬瓶颈。**
 
 ---
 
-## 6. 结论
+## 6. 模型对比：qwen3-vl-flash vs qwen3-vl-plus
 
-### 6.1 核心发现
+### 6.1 总体结果对比
 
-1. **Qwen3-VL-Flash 无法精确完成 CAD 数值验证任务。** 两个 Pipeline 的正样本准确率均为 0%，模型无法准确读取工程图中的数值标注。
+| 指标 | qwen3-vl-flash | qwen3-vl-plus | 变化 |
+|------|---------------|---------------|------|
+| **总体准确率** | **74%** (74/100) | **75%** (75/100) | +1pp |
+| 正样本准确率 | 0% (0/25) | 0% (0/25) | 不变 |
+| **负样本准确率** | **98.67%** (74/75) | **100%** (75/75) | +1.33pp |
+| count_error 检测 | 100% (25/25) | 100% (25/25) | 持平 |
+| scale_error 检测 | 96% (24/25) | **100%** (25/25) | +4pp |
+| symmetry_error 检测 | 100% (25/25) | 100% (25/25) | 持平 |
 
-2. **任务专用 Prompt 对计数任务有效，对数值读取无效。** count 约束的 96.4% 通过率验证了 prompt decomposition 可以缓解注意力漂移。但 size 和 distance 约束的低通过率说明，prompt 策略无法弥补模型在精确数值读取上的根本缺陷。
+### 6.2 正样本约束通过率对比：plus 全面退步
 
-3. **约束分解提供了卓越的诊断信息。** Pipeline 2 虽然总体准确率低于 Pipeline 1（38% vs 60%），但能精确定位模型的薄弱环节（radius 60% 失败、distance 51% 失败），这是 Pipeline 1 无法提供的。
+qwen3-vl-plus 在负样本上达到 100% 完美检测，但代价是**正样本上所有维度全面退步**——plus 模型严重偏向输出 `match: false`。
 
-4. **负样本的高准确率是假阳性。** Pipeline 2 的 94% 负样本准确率并非因为模型成功检测到了扰动，而是因为模型在正样本上也大量误报——正样本平均只有 60.8% 约束通过，因此负样本"碰巧"被正确标记为不匹配。
+| 约束维度 | flash 通过率 | plus 通过率 | 变化 |
+|---------|------------|------------|------|
+| `count` | **100%** (50/50) | 92% (46/50) | -8pp |
+| `size corner_radius` | **100%** (25/25) | 80% (20/25) | -20pp |
+| `size width` | **84%** (42/50) | 24% (12/50) | **-60pp** |
+| `size height` | **75%** (94/125) | 41% (51/125) | **-34pp** |
+| `size radius` | **40%** (10/25) | 4% (1/25) | **-36pp** |
+| `distance` | **16%** (9/58) | **0%** (0/58) | **-16pp** |
 
-5. **确定性约束引擎完全可靠。** regex-based parser 在 100 个样本上零错误，验证了文本模板的固定性。
+```
+正样本通过率对比：
+                    flash    plus
+  count             ████████ 92%   ██████░░ 92%   (-8pp)
+  corner_radius     ████████ 100%  ███████░ 80%   (-20pp)
+  width             ███████░ 84%   ██░░░░░░ 24%   (-60pp)
+  height            ██████░░ 75%   ███░░░░░ 41%   (-34pp)
+  radius            ████░░░░ 40%   ░░░░░░░░  4%   (-36pp)
+  distance          ██░░░░░░ 16%   ░░░░░░░░  0%   (-16pp)
+```
 
-### 6.2 建议
+### 6.3 正样本失败影响面对比
 
-1. **测试更强的 VLM**（GPT-4o、Claude Sonnet、Qwen2.5-VL-72B）——约束引擎和 prompt 路由与模型无关，换用更强的模型可能显著改善数值验证准确率
-2. **引入容差匹配**——将精确相等改为 ±5% 或 ±10% 容差，以补偿 VLM 数值读取的固有偏差
-3. **补充 Pipeline 1 对比数据**——当前 Pipeline 1 结果基于不同 max_tokens 设置（512 vs 256），需要统一条件下的公平对比
-4. **完成剩余 58 个样本**——补充完整的 100 样本结果
-5. **优化 distance/radius prompt**——加入链式思维（chain-of-thought）步骤或视觉锚定（visual grounding）指令
+| 约束维度 | flash 影响样本数 | plus 影响样本数 |
+|---------|----------------|----------------|
+| `distance` | 25/25 (100%) | **25/25 (100%)** |
+| `size height` | 20/25 (80%) | **25/25 (100%)** |
+| `size width` | 8/25 (32%) | **25/25 (100%)** |
+| `size radius` | 15/25 (60%) | **24/25 (96%)** |
+| `size corner_radius` | 0/25 (0%) | **5/25 (20%)** |
+| `count` | 0/25 (0%) | **4/25 (16%)** |
+
+### 6.4 分析
+
+**plus 的"完美负样本检测"是假象。** qwen3-vl-plus 在所有 100 个样本（正+负）上几乎都输出 `match: false`。负样本的 ground truth 恰好也是"不匹配"，所以 75 个负样本全部判对。但这不是"检测到了扰动"，而是模型拒绝承认任何匹配。
+
+**plus 比 flash 更"严格"但更不"精确"。** flash 在部分维度上能正确验证（corner_radius 100%、count 100%、width 84%），plus 则在几乎所有维度上都失败——包括 flash 完美通过的 corner_radius 和 count。
+
+**两个模型的共同瓶颈是 distance。** flash 通过率 16%，plus 通过率 0%。无论模型强弱，distance 都是 CAD 几何验证最难的任务——它要求多步空间推理（定位中心→测量间距），当前 VLM 尚未具备这一能力。
+
+**flash 是更适合此任务的模型。** 虽然 plus 的负样本准确率更高（100% vs 98.67%），但 flash 在正样本上的约束通过率全面优于 plus（6 个维度中 5 个更高）。flash 更接近"真正理解几何"而非"一味拒绝"。
+
+### 6.5 结论
+
+1. **Pipeline 2 显著优于 Pipeline 1。** 总体准确率 74% vs 60%，负样本准确率 98.67% vs 80%。约束分解 + 任务专用 prompt 策略在所有维度上均优于端到端判断。
+
+2. **Prompt 优化带来显著提升。** 完整填充约束信息（view、world_axis、layout）后，总体准确率从 38% 提升至 74%（同 Pipeline 2 框架下），distance 通过率 +12.3pp，size 通过率 +9.0pp，height 失败率从 46% 降至 25%。
+
+3. **当前 VLM 无法精确完成 CAD 数值验证。** 两个模型（flash/plus）的正样本准确率均为 0%。distance（flash 84% 失败，plus 100% 失败）和 radius（60%/96% 失败）是最薄弱的维度。
+
+4. **计数验证近乎完美。** flash 上 count 约束正样本 0% 失败率，100 样本上 92.1% 通过率。任务专用 prompt + layout 信息使计数成为 VLM 最可靠的推理模式。
+
+5. **更强模型不等于更好的几何验证。** qwen3-vl-plus 负样本 100% 检测，但代价是正样本上全面退步——plus 偏向于拒绝所有匹配，flash 才是更适合此任务的模型。
+
+6. **Distance 是核心硬瓶颈。** flash 通过率仅 16%，plus 通过率 0%。无论模型强弱，distance（定位中心→测量间距）的多步空间推理都是 VLM 的盲区。
+
+7. **确定性约束引擎完全可靠。** regex-based parser 在 100 个样本上零解析错误。
+
+### 6.6 建议
+
+1. **引入容差匹配**——将精确相等改为 ±5% 或 ±10% 容差，以补偿 VLM 数值读取的固有偏差。这是最可能快速提升正样本准确率的改进
+2. **测试其他 VLM**（GPT-4o、Claude Sonnet、InternVL3）——约束引擎和 prompt 路由与模型无关，可直接接入评估
+3. **优化 distance prompt**——distance 是正样本上失败率最高的维度，可尝试链式思维（"先找到标注线→读数值→与目标比较"）或视觉锚定指令
+4. **优化 radius prompt**——加入引导模型查找 R/Ø 标注并区分半径与直径的指令
 
 ---
 

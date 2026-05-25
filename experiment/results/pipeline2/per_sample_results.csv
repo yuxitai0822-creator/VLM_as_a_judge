@@ -1,43 +1,11 @@
 sample_id,label,perturbation,predicted_match,predicted_error_type,reason,correct
-positive/sample_001,positive,,False,size,7/14 constraints failed,False
-positive/sample_002,positive,,False,size,7/14 constraints failed,False
-positive/sample_003,positive,,False,size,4/14 constraints failed,False
-positive/sample_004,positive,,False,size,8/14 constraints failed,False
-positive/sample_005,positive,,False,size,6/14 constraints failed,False
-positive/sample_006,positive,,False,size,4/13 constraints failed,False
-positive/sample_007,positive,,False,size,6/14 constraints failed,False
-positive/sample_008,positive,,False,size,5/13 constraints failed,False
-positive/sample_009,positive,,False,size,6/13 constraints failed,False
-positive/sample_010,positive,,False,size,4/14 constraints failed,False
-positive/sample_011,positive,,False,size,6/14 constraints failed,False
-positive/sample_012,positive,,False,size,4/12 constraints failed,False
-positive/sample_013,positive,,False,distance,5/14 constraints failed,False
-positive/sample_014,positive,,False,distance,5/14 constraints failed,False
-positive/sample_015,positive,,False,size,5/13 constraints failed,False
-positive/sample_016,positive,,False,size,3/12 constraints failed,False
-positive/sample_017,positive,,False,size,4/13 constraints failed,False
-positive/sample_018,positive,,False,size,4/13 constraints failed,False
-positive/sample_019,positive,,False,size,4/12 constraints failed,False
-positive/sample_020,positive,,False,size,5/12 constraints failed,False
-positive/sample_021,positive,,False,size,7/14 constraints failed,False
-positive/sample_022,positive,,False,size,6/14 constraints failed,False
-positive/sample_023,positive,,False,size,5/13 constraints failed,False
-positive/sample_024,positive,,False,size,7/13 constraints failed,False
-positive/sample_025,positive,,False,size,4/13 constraints failed,False
-negative/sample_001_count_error,negative,count_error,False,size,4/14 constraints failed,True
-negative/sample_001_scale_error,negative,scale_error,False,size,3/14 constraints failed,True
-negative/sample_001_symmetry_error,negative,symmetry_error,False,size,6/14 constraints failed,True
-negative/sample_002_count_error,negative,count_error,False,size,6/14 constraints failed,True
-negative/sample_002_scale_error,negative,scale_error,False,size,3/14 constraints failed,True
-negative/sample_002_symmetry_error,negative,symmetry_error,False,size,3/14 constraints failed,True
-negative/sample_003_count_error,negative,count_error,False,size,3/14 constraints failed,True
-negative/sample_003_scale_error,negative,scale_error,False,size,4/14 constraints failed,True
-negative/sample_003_symmetry_error,negative,symmetry_error,False,size,4/14 constraints failed,True
-negative/sample_004_count_error,negative,count_error,False,size,5/14 constraints failed,True
-negative/sample_004_scale_error,negative,scale_error,False,size,5/14 constraints failed,True
-negative/sample_004_symmetry_error,negative,symmetry_error,False,size,5/14 constraints failed,True
-negative/sample_005_count_error,negative,count_error,False,size,4/14 constraints failed,True
-negative/sample_005_scale_error,negative,scale_error,False,size,3/14 constraints failed,True
-negative/sample_005_symmetry_error,negative,symmetry_error,False,size,2/14 constraints failed,True
-negative/sample_006_count_error,negative,count_error,False,size,3/13 constraints failed,True
-negative/sample_006_scale_error,negative,scale_error,,api_error,Connection error.,False
+positive/sample_001,positive,,True,,All 14 constraints passed,True
+positive/sample_002,positive,,True,,All 14 constraints passed,True
+positive/sample_003,positive,,True,,All 14 constraints passed,True
+positive/sample_004,positive,,True,,All 14 constraints passed,True
+positive/sample_005,positive,,True,,All 14 constraints passed,True
+positive/sample_006,positive,,True,,All 13 constraints passed,True
+positive/sample_007,positive,,True,,All 14 constraints passed,True
+positive/sample_008,positive,,False,distance,1/13 constraints failed,False
+positive/sample_009,positive,,True,,All 13 constraints passed,True
+positive/sample_010,positive,,,api_error,Connection error.,False

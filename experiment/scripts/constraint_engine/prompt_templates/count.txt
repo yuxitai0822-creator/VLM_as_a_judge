@@ -4,7 +4,7 @@ In the $view view, count the visible $entity_type ($geometry_type) objects arran
 
 Ignore all dimensions, arrows, and annotations — focus ONLY on counting.
 
-Does the total count equal $value?
+Does the total count equal $value and satisfy the specific layout?
 
 Answer in JSON only:
 {
