@@ -8,9 +8,10 @@ mode: api
 api:
   base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"   # e.g. DashScope / vLLM / Ollama
   api_key: "sk-daf76576c50d47b3bb871f3bebb229c4"                                     # your API key
-  model: "qwen3.5-flash"                                  # model name on the endpoint
+  model: "qwen3.6-flash"                                  # model name on the endpoint
   max_tokens: 512
   temperature: 0.0
+  max_concurrency: 8                                       # concurrent requests for batch mode
 
 # ----- Local mode settings -----
 local:

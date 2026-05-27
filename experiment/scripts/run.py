@@ -65,12 +65,16 @@ def run_experiment(config_path: str | Path) -> dict:
     print(f"\nInitializing judge ({cfg.get('mode', 'api')} mode) ...")
     judge = create_judge(config_path)
 
-    print(f"Running judgment on {len(valid_samples)} samples ...\n")
-    results = []
-    for i, sample in enumerate(valid_samples):
-        print(f"[{i+1}/{len(valid_samples)}] {sample['sample_id']}")
-        judgment = judge.judge(sample["text"], sample["image_path"])
+    print(f"Running judgment on {len(valid_samples)} samples (concurrent) ...\n")
 
+    batch_samples = [
+        {**s, "image": s["image_path"]}
+        for s in valid_samples
+    ]
+    judgments = judge.judge_batch(batch_samples)
+
+    results = []
+    for sample, judgment in zip(valid_samples, judgments):
         results.append({
             "sample_id": sample["sample_id"],
             "label": sample["label"],

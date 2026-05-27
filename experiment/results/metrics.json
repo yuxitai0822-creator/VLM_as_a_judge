@@ -1,18 +1,18 @@
 {
   "total_samples": 100,
-  "overall_accuracy": 0.6,
-  "overall_correct": 60,
-  "positive_accuracy": 0.0,
-  "positive_correct": 0,
+  "overall_accuracy": 0.79,
+  "overall_correct": 79,
+  "positive_accuracy": 0.56,
+  "positive_correct": 14,
   "positive_total": 25,
-  "negative_accuracy": 0.8,
-  "negative_correct": 60,
+  "negative_accuracy": 0.8666666666666667,
+  "negative_correct": 65,
   "negative_total": 75,
   "per_error_type": {
     "count_error": {
       "total": 25,
-      "correct": 20,
-      "accuracy": 0.8
+      "correct": 23,
+      "accuracy": 0.92
     },
     "scale_error": {
       "total": 25,
@@ -21,8 +21,8 @@
     },
     "symmetry_error": {
       "total": 25,
-      "correct": 19,
-      "accuracy": 0.76
+      "correct": 21,
+      "accuracy": 0.84
     }
   }
 }

@@ -56,6 +56,7 @@ class APIJudge:
         max_tokens: int = 512,
         temperature: float = 0.0,
         system_prompt: str | None = None,
+        max_concurrency: int = 8,
         **kwargs,
     ):
         self.base_url = base_url.rstrip("/")
@@ -64,6 +65,7 @@ class APIJudge:
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.system_prompt = system_prompt or load_system_prompt()
+        self.max_concurrency = max_concurrency
 
     def judge(self, text: str, image: Image.Image | str | Path) -> dict:
         if isinstance(image, (str, Path)):
@@ -107,12 +109,63 @@ class APIJudge:
         return response.choices[0].message.content.strip()
 
     def judge_batch(self, samples: list[dict]) -> list[dict]:
-        results = []
-        for i, s in enumerate(samples):
-            result = self.judge(s["text"], s["image"])
-            results.append(result)
-            print(f"  [{i+1}/{len(samples)}] match={result.get('match')}, "
-                  f"error_type={result.get('error_type')}")
+        """Run judgment on a batch of samples using async concurrent calls."""
+        import asyncio
+
+        return asyncio.run(self._judge_batch_async(samples))
+
+    async def _judge_batch_async(self, samples: list[dict]) -> list[dict]:
+        import asyncio
+        from openai import AsyncOpenAI
+
+        semaphore = asyncio.Semaphore(self.max_concurrency)
+        client = AsyncOpenAI(base_url=self.base_url, api_key=self.api_key)
+        results = [None] * len(samples)
+
+        async def _call_one(index: int, sample: dict):
+            async with semaphore:
+                if isinstance(sample["image"], (str, Path)):
+                    image = Image.open(sample["image"]).convert("RGB")
+                else:
+                    image = sample["image"]
+
+                b64 = _image_to_base64(image)
+                data_uri = f"data:image/png;base64,{b64}"
+
+                user_content = (
+                    f"Text description:\n{sample['text']}\n\n"
+                    "Examine the CAD rendering above and determine if it matches the description."
+                )
+                messages = [
+                    {"role": "system", "content": self.system_prompt},
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "image_url", "image_url": {"url": data_uri}},
+                            {"type": "text", "text": user_content},
+                        ],
+                    },
+                ]
+
+                try:
+                    response = await client.chat.completions.create(
+                        model=self.model,
+                        messages=messages,
+                        max_tokens=self.max_tokens,
+                        temperature=self.temperature,
+                    )
+                    text = response.choices[0].message.content.strip()
+                    result = _parse_response(text)
+                except Exception as e:
+                    result = {"match": None, "error_type": "api_error", "reason": str(e)}
+
+                results[index] = result
+                done = sum(1 for r in results if r is not None)
+                print(f"  [{done}/{len(samples)}] match={result.get('match')}, "
+                      f"error_type={result.get('error_type')}")
+
+        tasks = [_call_one(i, s) for i, s in enumerate(samples)]
+        await asyncio.gather(*tasks)
         return results
 
 
@@ -269,6 +322,7 @@ def create_judge(config_path: str | Path | None = None) -> APIJudge | QwenVLJudg
             max_tokens=api_cfg.get("max_tokens", 512),
             temperature=api_cfg.get("temperature", 0.0),
             system_prompt=system_prompt,
+            max_concurrency=api_cfg.get("max_concurrency", 8),
         )
     elif mode == "local":
         local_cfg = cfg.get("local", {})
