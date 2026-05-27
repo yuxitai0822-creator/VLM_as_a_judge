@@ -8,3 +8,93 @@
 {"sample_id": "positive/sample_008", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
 {"sample_id": "positive/sample_009", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
 {"sample_id": "positive/sample_010", "label": "positive", "perturbation": null, "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "positive/sample_011", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 14 constraints passed"}
+{"sample_id": "positive/sample_012", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "positive/sample_013", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "positive/sample_014", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 14 constraints passed"}
+{"sample_id": "positive/sample_015", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "positive/sample_016", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "positive/sample_017", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "positive/sample_018", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "positive/sample_019", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "positive/sample_020", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "positive/sample_021", "label": "positive", "perturbation": null, "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "positive/sample_022", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 14 constraints passed"}
+{"sample_id": "positive/sample_023", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "positive/sample_024", "label": "positive", "perturbation": null, "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "positive/sample_025", "label": "positive", "perturbation": null, "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_001_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_001_scale_error", "label": "negative", "perturbation": "scale_error", "match": true, "predicted_error_type": "", "reason": "All 14 constraints passed"}
+{"sample_id": "negative/sample_001_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_002_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_002_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_002_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_003_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_003_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_003_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_004_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_004_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_004_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_005_count_error", "label": "negative", "perturbation": "count_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_005_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_005_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_006_count_error", "label": "negative", "perturbation": "count_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "negative/sample_006_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_006_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "negative/sample_007_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "3/14 constraints failed"}
+{"sample_id": "negative/sample_007_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_007_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_008_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_008_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_008_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_009_count_error", "label": "negative", "perturbation": "count_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "negative/sample_009_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_009_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_010_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_010_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_010_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_011_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_011_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_011_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "size", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_012_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_012_scale_error", "label": "negative", "perturbation": "scale_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_012_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "negative/sample_013_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_013_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_013_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_014_count_error", "label": "negative", "perturbation": "count_error", "match": true, "predicted_error_type": "", "reason": "All 14 constraints passed"}
+{"sample_id": "negative/sample_014_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "3/14 constraints failed"}
+{"sample_id": "negative/sample_014_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_015_count_error", "label": "negative", "perturbation": "count_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_015_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_015_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "negative/sample_016_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "size", "reason": "1/12 constraints failed"}
+{"sample_id": "negative/sample_016_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_016_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_017_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_017_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_017_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_018_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_018_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "distance", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_018_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_019_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "distance", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_019_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "3/12 constraints failed"}
+{"sample_id": "negative/sample_019_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "size", "reason": "3/12 constraints failed"}
+{"sample_id": "negative/sample_020_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "distance", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_020_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "distance", "reason": "2/12 constraints failed"}
+{"sample_id": "negative/sample_020_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/12 constraints failed"}
+{"sample_id": "negative/sample_021_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_021_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "2/14 constraints failed"}
+{"sample_id": "negative/sample_021_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_022_count_error", "label": "negative", "perturbation": "count_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_022_scale_error", "label": "negative", "perturbation": "scale_error", "match": null, "predicted_error_type": "api_error", "reason": "Connection error."}
+{"sample_id": "negative/sample_022_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "distance", "reason": "1/14 constraints failed"}
+{"sample_id": "negative/sample_023_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_023_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "count", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_023_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": false, "predicted_error_type": "size", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_024_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_024_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "1/13 constraints failed"}
+{"sample_id": "negative/sample_024_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
+{"sample_id": "negative/sample_025_count_error", "label": "negative", "perturbation": "count_error", "match": false, "predicted_error_type": "count", "reason": "2/13 constraints failed"}
+{"sample_id": "negative/sample_025_scale_error", "label": "negative", "perturbation": "scale_error", "match": false, "predicted_error_type": "size", "reason": "3/13 constraints failed"}
+{"sample_id": "negative/sample_025_symmetry_error", "label": "negative", "perturbation": "symmetry_error", "match": true, "predicted_error_type": "", "reason": "All 13 constraints passed"}
