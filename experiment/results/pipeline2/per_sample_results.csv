@@ -6,46 +6,46 @@ positive/sample_004,positive,,True,,All 14 constraints passed,True
 positive/sample_005,positive,,True,,All 14 constraints passed,True
 positive/sample_006,positive,,True,,All 13 constraints passed,True
 positive/sample_007,positive,,True,,All 14 constraints passed,True
-positive/sample_008,positive,,False,distance,1/13 constraints failed,False
+positive/sample_008,positive,,True,,All 13 constraints passed,True
 positive/sample_009,positive,,True,,All 13 constraints passed,True
-positive/sample_010,positive,,,api_error,Connection error.,False
+positive/sample_010,positive,,True,,All 14 constraints passed,True
 positive/sample_011,positive,,True,,All 14 constraints passed,True
 positive/sample_012,positive,,False,distance,1/12 constraints failed,False
-positive/sample_013,positive,,False,distance,1/14 constraints failed,False
+positive/sample_013,positive,,True,,All 14 constraints passed,True
 positive/sample_014,positive,,True,,All 14 constraints passed,True
 positive/sample_015,positive,,True,,All 13 constraints passed,True
 positive/sample_016,positive,,False,distance,1/12 constraints failed,False
-positive/sample_017,positive,,False,distance,1/13 constraints failed,False
+positive/sample_017,positive,,True,,All 13 constraints passed,True
 positive/sample_018,positive,,False,distance,1/13 constraints failed,False
 positive/sample_019,positive,,False,distance,1/12 constraints failed,False
 positive/sample_020,positive,,False,distance,1/12 constraints failed,False
-positive/sample_021,positive,,False,size,1/14 constraints failed,False
+positive/sample_021,positive,,True,,All 14 constraints passed,True
 positive/sample_022,positive,,True,,All 14 constraints passed,True
 positive/sample_023,positive,,True,,All 13 constraints passed,True
 positive/sample_024,positive,,True,,All 13 constraints passed,True
-positive/sample_025,positive,,,api_error,Connection error.,False
-negative/sample_001_count_error,negative,count_error,False,distance,1/14 constraints failed,True
-negative/sample_001_scale_error,negative,scale_error,True,,All 14 constraints passed,False
+positive/sample_025,positive,,False,distance,1/13 constraints failed,False
+negative/sample_001_count_error,negative,count_error,True,,All 14 constraints passed,False
+negative/sample_001_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
 negative/sample_001_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_002_count_error,negative,count_error,False,count,2/14 constraints failed,True
-negative/sample_002_scale_error,negative,scale_error,False,size,2/14 constraints failed,True
-negative/sample_002_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_003_count_error,negative,count_error,False,size,1/14 constraints failed,True
+negative/sample_002_count_error,negative,count_error,False,distance,4/14 constraints failed,True
+negative/sample_002_scale_error,negative,scale_error,False,size,3/14 constraints failed,True
+negative/sample_002_symmetry_error,negative,symmetry_error,True,,All 14 constraints passed,False
+negative/sample_003_count_error,negative,count_error,True,,All 14 constraints passed,False
 negative/sample_003_scale_error,negative,scale_error,False,size,2/14 constraints failed,True
 negative/sample_003_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_004_count_error,negative,count_error,False,count,1/14 constraints failed,True
+negative/sample_004_count_error,negative,count_error,,api_error,Connection error.,False
 negative/sample_004_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
-negative/sample_004_symmetry_error,negative,symmetry_error,,api_error,Connection error.,False
+negative/sample_004_symmetry_error,negative,symmetry_error,False,size,2/14 constraints failed,True
 negative/sample_005_count_error,negative,count_error,,api_error,Connection error.,False
 negative/sample_005_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
 negative/sample_005_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
 negative/sample_006_count_error,negative,count_error,True,,All 13 constraints passed,False
 negative/sample_006_scale_error,negative,scale_error,False,size,1/13 constraints failed,True
 negative/sample_006_symmetry_error,negative,symmetry_error,True,,All 13 constraints passed,False
-negative/sample_007_count_error,negative,count_error,False,count,3/14 constraints failed,True
+negative/sample_007_count_error,negative,count_error,False,size,3/14 constraints failed,True
 negative/sample_007_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
-negative/sample_007_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_008_count_error,negative,count_error,False,count,2/13 constraints failed,True
+negative/sample_007_symmetry_error,negative,symmetry_error,False,count,1/14 constraints failed,True
+negative/sample_008_count_error,negative,count_error,False,count,1/13 constraints failed,True
 negative/sample_008_scale_error,negative,scale_error,False,size,1/13 constraints failed,True
 negative/sample_008_symmetry_error,negative,symmetry_error,False,distance,1/13 constraints failed,True
 negative/sample_009_count_error,negative,count_error,True,,All 13 constraints passed,False
@@ -53,49 +53,29 @@ negative/sample_009_scale_error,negative,scale_error,False,size,1/13 constraints
 negative/sample_009_symmetry_error,negative,symmetry_error,False,distance,1/13 constraints failed,True
 negative/sample_010_count_error,negative,count_error,False,count,2/14 constraints failed,True
 negative/sample_010_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
-negative/sample_010_symmetry_error,negative,symmetry_error,False,distance,2/14 constraints failed,True
-negative/sample_011_count_error,negative,count_error,False,count,2/14 constraints failed,True
+negative/sample_010_symmetry_error,negative,symmetry_error,False,count,2/14 constraints failed,True
+negative/sample_011_count_error,negative,count_error,True,,All 14 constraints passed,False
 negative/sample_011_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
-negative/sample_011_symmetry_error,negative,symmetry_error,False,size,2/14 constraints failed,True
-negative/sample_012_count_error,negative,count_error,False,count,2/12 constraints failed,True
-negative/sample_012_scale_error,negative,scale_error,,api_error,Connection error.,False
+negative/sample_011_symmetry_error,negative,symmetry_error,False,count,2/14 constraints failed,True
+negative/sample_012_count_error,negative,count_error,False,count,3/12 constraints failed,True
+negative/sample_012_scale_error,negative,scale_error,False,distance,3/12 constraints failed,True
 negative/sample_012_symmetry_error,negative,symmetry_error,False,distance,1/12 constraints failed,True
 negative/sample_013_count_error,negative,count_error,False,count,2/14 constraints failed,True
 negative/sample_013_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
-negative/sample_013_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
+negative/sample_013_symmetry_error,negative,symmetry_error,False,count,2/14 constraints failed,True
 negative/sample_014_count_error,negative,count_error,True,,All 14 constraints passed,False
-negative/sample_014_scale_error,negative,scale_error,False,size,3/14 constraints failed,True
-negative/sample_014_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_015_count_error,negative,count_error,,api_error,Connection error.,False
+negative/sample_014_scale_error,negative,scale_error,False,size,1/14 constraints failed,True
+negative/sample_014_symmetry_error,negative,symmetry_error,True,,All 14 constraints passed,False
+negative/sample_015_count_error,negative,count_error,False,count,3/13 constraints failed,True
 negative/sample_015_scale_error,negative,scale_error,False,size,1/13 constraints failed,True
-negative/sample_015_symmetry_error,negative,symmetry_error,True,,All 13 constraints passed,False
-negative/sample_016_count_error,negative,count_error,False,size,1/12 constraints failed,True
+negative/sample_015_symmetry_error,negative,symmetry_error,False,distance,1/13 constraints failed,True
+negative/sample_016_count_error,negative,count_error,False,distance,1/12 constraints failed,True
 negative/sample_016_scale_error,negative,scale_error,False,size,2/12 constraints failed,True
-negative/sample_016_symmetry_error,negative,symmetry_error,False,distance,2/12 constraints failed,True
-negative/sample_017_count_error,negative,count_error,False,size,1/13 constraints failed,True
-negative/sample_017_scale_error,negative,scale_error,False,size,2/13 constraints failed,True
-negative/sample_017_symmetry_error,negative,symmetry_error,False,size,1/13 constraints failed,True
+negative/sample_016_symmetry_error,negative,symmetry_error,False,size,3/12 constraints failed,True
+negative/sample_017_count_error,negative,count_error,False,count,1/13 constraints failed,True
+negative/sample_017_scale_error,negative,scale_error,False,distance,2/13 constraints failed,True
+negative/sample_017_symmetry_error,negative,symmetry_error,True,,All 13 constraints passed,False
 negative/sample_018_count_error,negative,count_error,False,distance,1/13 constraints failed,True
 negative/sample_018_scale_error,negative,scale_error,False,distance,2/13 constraints failed,True
-negative/sample_018_symmetry_error,negative,symmetry_error,False,distance,1/13 constraints failed,True
-negative/sample_019_count_error,negative,count_error,False,distance,2/12 constraints failed,True
-negative/sample_019_scale_error,negative,scale_error,False,size,3/12 constraints failed,True
-negative/sample_019_symmetry_error,negative,symmetry_error,False,size,3/12 constraints failed,True
-negative/sample_020_count_error,negative,count_error,False,distance,2/12 constraints failed,True
-negative/sample_020_scale_error,negative,scale_error,False,distance,2/12 constraints failed,True
-negative/sample_020_symmetry_error,negative,symmetry_error,False,distance,1/12 constraints failed,True
-negative/sample_021_count_error,negative,count_error,False,count,1/14 constraints failed,True
-negative/sample_021_scale_error,negative,scale_error,False,size,2/14 constraints failed,True
-negative/sample_021_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_022_count_error,negative,count_error,,api_error,Connection error.,False
-negative/sample_022_scale_error,negative,scale_error,,api_error,Connection error.,False
-negative/sample_022_symmetry_error,negative,symmetry_error,False,distance,1/14 constraints failed,True
-negative/sample_023_count_error,negative,count_error,False,count,2/13 constraints failed,True
-negative/sample_023_scale_error,negative,scale_error,False,count,1/13 constraints failed,True
-negative/sample_023_symmetry_error,negative,symmetry_error,False,size,2/13 constraints failed,True
-negative/sample_024_count_error,negative,count_error,False,count,1/13 constraints failed,True
-negative/sample_024_scale_error,negative,scale_error,False,size,1/13 constraints failed,True
-negative/sample_024_symmetry_error,negative,symmetry_error,True,,All 13 constraints passed,False
-negative/sample_025_count_error,negative,count_error,False,count,2/13 constraints failed,True
-negative/sample_025_scale_error,negative,scale_error,False,size,3/13 constraints failed,True
-negative/sample_025_symmetry_error,negative,symmetry_error,True,,All 13 constraints passed,False
+negative/sample_018_symmetry_error,negative,symmetry_error,False,size,2/13 constraints failed,True
+negative/sample_019_count_error,negative,count_error,,api_error,"Error code: 400 - {'error': {'message': 'Access denied, please make sure your account is in good standing. For details, see: https://help.aliyun.com/zh/model-studio/error-code#overdue-payment', 'type': 'Arrearage', 'param': None, 'code': 'Arrearage'}, 'id': 'chatcmpl-91574756-3a14-9ea7-a652-eab90a49b90f', 'request_id': '91574756-3a14-9ea7-a652-eab90a49b90f'}",False

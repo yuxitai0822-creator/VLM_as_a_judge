@@ -121,12 +121,14 @@ class ConstraintJudge:
         self.model = model
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self.max_workers = kwargs.get("max_workers", 1)
 
     # --- single constraint VLM call ---
 
     def _call_vlm(self, prompt: str, image: Image.Image) -> dict:
         """Send a specialized verification prompt + image to the VLM."""
-        from openai import APIError, APITimeoutError, RateLimitError, OpenAI
+        import time
+        from openai import APIError, APITimeoutError, RateLimitError, APIConnectionError, OpenAI
 
         b64 = _image_to_base64(image)
         data_uri = f"data:image/png;base64,{b64}"
@@ -141,21 +143,54 @@ class ConstraintJudge:
             },
         ]
 
-        try:
-            client = OpenAI(base_url=self.base_url, api_key=self.api_key)
-            response = client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-            )
-            return _parse_response(response.choices[0].message.content.strip())
-        except (RateLimitError, APITimeoutError) as e:
-            print(f"    [RETRY] {type(e).__name__}: {e}")
-            return {"match": None, "reason": f"API error: {e}"}
-        except APIError as e:
-            print(f"    [API ERROR] {type(e).__name__}: {e}")
-            raise
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                client = OpenAI(base_url=self.base_url, api_key=self.api_key)
+                response = client.chat.completions.create(
+                    model=self.model,
+                    messages=messages,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                )
+                return _parse_response(response.choices[0].message.content.strip())
+            except (RateLimitError, APITimeoutError, APIConnectionError) as e:
+                print(f"    [RETRY {attempt+1}/{max_retries}] {type(e).__name__}: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(5)
+                    continue
+                return {"match": None, "reason": f"API error after {max_retries} retries: {e}"}
+            except APIError as e:
+                print(f"    [API ERROR] {type(e).__name__}: {e}")
+                raise
+
+    # --- concurrent constraint evaluation ---
+
+    def _evaluate_constraints_batch(
+        self, constraints: list[Constraint], image: Image.Image
+    ) -> list[dict]:
+        """Evaluate all constraints concurrently using ThreadPoolExecutor."""
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        results: list[dict | None] = [None] * len(constraints)
+        with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
+            future_map = {
+                pool.submit(self._evaluate_constraint, c, image): i
+                for i, c in enumerate(constraints)
+            }
+            for future in as_completed(future_map):
+                idx = future_map[future]
+                results[idx] = future.result()
+
+        for i, r in enumerate(results):
+            tag = "PASS" if r["match"] else "FAIL"
+            ct = r["constraint_type"]
+            dim = r.get("dimension") or ""
+            val = r.get("value", "")
+            print(f"    constraint {i+1}/{len(constraints)}: [{tag}] "
+                  f"{ct} {dim}={val}")
+
+        return results
 
     # --- per-constraint evaluation ---
 
@@ -199,16 +234,19 @@ class ConstraintJudge:
         constraints = parse_text(text)
 
         # Step 2: per-constraint VLM inference
-        constraint_results = []
-        for i, c in enumerate(constraints):
-            result = self._evaluate_constraint(c, image)
-            constraint_results.append(result)
-            tag = "PASS" if result["match"] else "FAIL"
-            ct = result["constraint_type"]
-            dim = result.get("dimension") or ""
-            val = result.get("value", "")
-            print(f"    constraint {i+1}/{len(constraints)}: [{tag}] "
-                  f"{ct} {dim}={val}")
+        if self.max_workers > 1:
+            constraint_results = self._evaluate_constraints_batch(constraints, image)
+        else:
+            constraint_results = []
+            for i, c in enumerate(constraints):
+                result = self._evaluate_constraint(c, image)
+                constraint_results.append(result)
+                tag = "PASS" if result["match"] else "FAIL"
+                ct = result["constraint_type"]
+                dim = result.get("dimension") or ""
+                val = result.get("value", "")
+                print(f"    constraint {i+1}/{len(constraints)}: [{tag}] "
+                      f"{ct} {dim}={val}")
 
         # Step 3: aggregate
         failed = [r for r in constraint_results if not r["match"]]
@@ -269,4 +307,5 @@ def create_judge(config_path: str | Path | None = None) -> ConstraintJudge:
         model=api_cfg.get("model", ""),
         max_tokens=api_cfg.get("max_tokens", 256),
         temperature=api_cfg.get("temperature", 0.0),
+        max_workers=api_cfg.get("max_concurrency", 1),
     )

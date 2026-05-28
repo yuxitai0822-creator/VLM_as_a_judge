@@ -150,7 +150,10 @@ def run_experiment(config_path: str | Path, reset: bool = False) -> dict:
     else:
         # Timing estimates
         avg_constraints = 13
-        est_per_sample = 60  # ~60s per sample (13 constraints × ~4-5s each)
+        cfg_api = cfg.get("api", {})
+        max_conc = cfg_api.get("max_concurrency", 1)
+        est_per_constraint = 5
+        est_per_sample = max(est_per_constraint, (avg_constraints / max_conc) * est_per_constraint)
         est_total = len(remaining) * est_per_sample
         print(f"Estimated time for {len(remaining)} samples: ~{format_duration(est_total)}\n")
 
@@ -191,6 +194,7 @@ def run_experiment(config_path: str | Path, reset: bool = False) -> dict:
                 "match": judgment.get("match"),
                 "predicted_error_type": judgment.get("error_type"),
                 "reason": judgment.get("reason"),
+                "constraint_results": judgment.get("constraint_results", []),
             }
             append_checkpoint(output_path, record)
 
